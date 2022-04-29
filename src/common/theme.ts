@@ -4,6 +4,10 @@ const defaultTheme = createTheme({
   palette: {
     primary: {
       main: '#F50057',
+      contrastText: '#fff',
+    },
+    text: {
+      primary: '#000',
     },
   },
   typography: {
@@ -11,6 +15,9 @@ const defaultTheme = createTheme({
       fontSize: '40px',
       fontWeight: 'bold',
       lineHeight: '112px',
+    },
+    h4: {
+      fontSize: '20px',
     },
   },
   breakpoints: {

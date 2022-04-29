@@ -30,7 +30,7 @@ const SignInForm: React.FC = () => {
     async (message) => {
       setAlert({
         show: true,
-        severity: 'info',
+        severity: 'error',
         message,
       });
     },
@@ -91,7 +91,10 @@ const SignInForm: React.FC = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <FormControl sx={{ mb: 6, width: '100%' }} variant="filled">
+        <FormControl
+          sx={{ mb: { xs: 3, md: 6 }, width: '100%' }}
+          variant="filled"
+        >
           <InputLabel htmlFor="filled-adornment-email">Email</InputLabel>
           <FilledInput
             id="filled-adornment-email"
@@ -102,7 +105,10 @@ const SignInForm: React.FC = () => {
           />
         </FormControl>
 
-        <FormControl sx={{ mb: 6, width: '100%' }} variant="filled">
+        <FormControl
+          sx={{ mb: { xs: 3, md: 6 }, width: '100%' }}
+          variant="filled"
+        >
           <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
           <FilledInput
             id="filled-adornment-password"

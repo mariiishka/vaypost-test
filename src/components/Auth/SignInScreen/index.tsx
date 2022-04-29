@@ -43,11 +43,11 @@ const SignInScreen: React.FC = () => {
                   margin: '0 auto',
                 }}
               >
-                <Box mb={5}>
+                <Box mb={{ xs: 2, md: 5 }}>
                   <img src={voypostLogo} alt="Voypost logo" />
                 </Box>
 
-                <Typography variant="h3" mb={8}>
+                <Typography variant="h3" mb={{ xs: 4, md: 8 }}>
                   Login
                 </Typography>
 
