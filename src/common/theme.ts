@@ -9,6 +9,9 @@ const defaultTheme = createTheme({
     text: {
       primary: '#000',
     },
+    info: {
+      main: '#323232',
+    },
   },
   typography: {
     h3: {
@@ -18,6 +21,11 @@ const defaultTheme = createTheme({
     },
     h4: {
       fontSize: '20px',
+    },
+    h6: {
+      fontSize: '14px',
+      fontWeight: 'bold',
+      letterSpacing: '-1.5px',
     },
   },
   breakpoints: {

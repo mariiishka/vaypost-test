@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { useUser } from 'reactfire';
 import app from '../../../common/firebaseApp';
 import clearFirestoreCache from '../../../common/clearFirestoreCache';
 import { UIContext } from '../UIContext';
 
 const AvatarMenu: React.FC = () => {
-  const { data: user } = useUser();
+  const [userInitials, setUserInitials] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { setAlert } = React.useContext(UIContext);
 
-  const userInitials = user.displayName
-    ?.split(' ')
-    .map((name) => name[0])
-    .join('');
+  useEffect(() => {
+    app.auth().onAuthStateChanged((user) => {
+      const injectDisplayName = () => {
+        if (app.auth().currentUser?.displayName === null) {
+          setTimeout(() => {
+            injectDisplayName();
+          }, 500);
+        } else if (user && user.displayName) {
+          setUserInitials(
+            user.displayName
+              .split(' ')
+              .map((name) => name[0])
+              .join(''),
+          );
+        }
+      };
+      injectDisplayName();
+    });
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

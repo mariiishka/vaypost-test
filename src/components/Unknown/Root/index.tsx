@@ -5,7 +5,7 @@ import AuthenticatedLayout from '../AuthenticatedLayout';
 import GuestLayout from '../GuestLayout';
 import HomeScreen from '../HomeScreen';
 import NotFoundScreen from '../NotFoundScreen';
-import SignInScreen from '../../Auth/SignInScreen';
+import SignScreen from '../../Auth/SignScreen';
 
 const Root: React.FC = () => {
   const {
@@ -34,6 +34,7 @@ const Root: React.FC = () => {
         <Switch>
           <Route exact path="/" component={HomeScreen} />
           <Route exact path="/login" component={() => <Redirect to="/" />} />
+          <Route exact path="/register" component={() => <Redirect to="/" />} />
           <Route path="*" component={NotFoundScreen} />
         </Switch>
       </AuthenticatedLayout>
@@ -43,7 +44,8 @@ const Root: React.FC = () => {
   return (
     <GuestLayout>
       <Switch>
-        <Route exact path="/login" component={SignInScreen} />
+        <Route exact path="/login" component={SignScreen} />
+        <Route exact path="/register" component={SignScreen} />
         <Route path="*" component={NotFoundScreen} />
       </Switch>
     </GuestLayout>
