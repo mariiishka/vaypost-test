@@ -1,143 +1,131 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import FilledInput from '@mui/material/FilledInput';
+import TextField from '@mui/material/TextField';
+import { useFormik } from 'formik';
+import { makeStyles } from '@mui/styles';
+import * as yup from 'yup';
 import app from '../../../common/firebaseApp';
 import { UIContext } from '../../Unknown/UIContext';
+import theme from '../../../common/theme';
 
-interface State {
-  email: string;
-  password: string;
-  showPassword: boolean;
-  disabledSumbit: boolean;
-}
+const useStyles = makeStyles({
+  textField: {
+    marginBottom: '24px',
+    [theme.breakpoints.up('md')]: {
+      marginBottom: '48px',
+    },
+  },
+});
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: yup
+    .string()
+    .min(6, 'Password should be of minimum 6 characters length')
+    .required('Password is required'),
+});
 
 const SignInForm: React.FC = () => {
-  const [values, setValues] = React.useState<State>({
-    email: '',
-    password: '',
-    showPassword: false,
-    disabledSumbit: false,
-  });
-
   const { setAlert } = React.useContext(UIContext);
+  const classes = useStyles();
 
-  const handleSignIn = React.useCallback(
-    async (message) => {
-      setAlert({
-        show: true,
-        severity: 'error',
-        message,
-      });
-    },
-    [setAlert],
-  );
-
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-
-  const resetForm = React.useCallback(() => {
-    setValues({
-      ...values,
+  const formik = useFormik({
+    initialValues: {
       email: '',
       password: '',
-    });
-  }, [values]);
-
-  const handleSubmit = React.useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const { email, password } = values;
-      setValues({ ...values, disabledSumbit: true });
-
+      showPassword: false,
+    },
+    validationSchema,
+    onSubmit: async (values) => {
       try {
-        await app.auth().signInWithEmailAndPassword(email, password);
-        resetForm();
-        setValues({
-          ...values,
-          disabledSumbit: false,
-        });
-      } catch ({ message }) {
-        handleSignIn(message);
-        setValues({
-          ...values,
-          disabledSumbit: false,
+        await app
+          .auth()
+          .signInWithEmailAndPassword(values.email, values.password);
+      } catch (error) {
+        let message = 'Somthing went wrong';
+
+        if (error instanceof Error) {
+          message = error.message;
+        }
+
+        setAlert({
+          show: true,
+          severity: 'error',
+          message,
         });
       }
     },
-    [handleSignIn, resetForm, values],
-  );
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-  };
+  });
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <FormControl
-          sx={{ mb: { xs: 3, md: 6 }, width: '100%' }}
+      <form onSubmit={formik.handleSubmit}>
+        <TextField
+          id="filled-adornment-email"
+          label="Email"
+          name="email"
           variant="filled"
-        >
-          <InputLabel htmlFor="filled-adornment-email">Email</InputLabel>
-          <FilledInput
-            id="filled-adornment-email"
-            type="email"
-            value={values.email}
-            onChange={handleChange('email')}
-            required
-          />
-        </FormControl>
+          type="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+          className={classes.textField}
+          fullWidth
+        />
 
-        <FormControl
-          sx={{ mb: { xs: 3, md: 6 }, width: '100%' }}
+        <TextField
+          id="filled-adornment-password"
+          label="Password"
+          name="password"
           variant="filled"
-        >
-          <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
-          <FilledInput
-            id="filled-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
-            required
-            endAdornment={
+          type={formik.values.showPassword ? 'text' : 'password'}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          className={classes.textField}
+          fullWidth
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+          InputProps={{
+            endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
+                  onClick={() => {
+                    formik.setFieldValue(
+                      'showPassword',
+                      !formik.values.showPassword,
+                    );
+                  }}
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                  }}
                   edge="end"
                 >
-                  {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                  {formik.values.showPassword ? (
+                    <VisibilityOff />
+                  ) : (
+                    <Visibility />
+                  )}
                 </IconButton>
               </InputAdornment>
-            }
-          />
-        </FormControl>
+            ),
+          }}
+        />
         <Button
           size="large"
           variant="contained"
           type="submit"
-          disabled={values.disabledSumbit}
+          disabled={formik.isSubmitting}
           fullWidth
         >
-          Sign in
+          Login
         </Button>
       </form>
     </>
