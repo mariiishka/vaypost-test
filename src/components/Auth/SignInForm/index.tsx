@@ -13,10 +13,12 @@ import { UIContext } from '../../Unknown/UIContext';
 import theme from '../../../common/theme';
 
 const useStyles = makeStyles({
-  textField: {
-    marginBottom: '24px',
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
     [theme.breakpoints.up('md')]: {
-      marginBottom: '48px',
+      gap: '32px',
     },
   },
 });
@@ -69,7 +71,7 @@ const SignInForm: React.FC = () => {
       <Typography variant="h3" mb={{ xs: 2, md: 4 }}>
         Login
       </Typography>
-      <form onSubmit={formik.handleSubmit}>
+      <form className={classes.form} onSubmit={formik.handleSubmit}>
         <TextField
           id="filled-adornment-email"
           label="Email"
@@ -80,7 +82,6 @@ const SignInForm: React.FC = () => {
           onChange={formik.handleChange}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
-          className={classes.textField}
           fullWidth
         />
 
@@ -92,7 +93,6 @@ const SignInForm: React.FC = () => {
           type={formik.values.showPassword ? 'text' : 'password'}
           value={formik.values.password}
           onChange={formik.handleChange}
-          className={classes.textField}
           fullWidth
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
