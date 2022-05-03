@@ -20,6 +20,10 @@ const defaultTheme = createTheme({
       lineHeight: '112px',
     },
     h4: {
+      fontSize: '28px',
+      fontWeight: 'bold',
+    },
+    h5: {
       fontSize: '20px',
     },
     h6: {

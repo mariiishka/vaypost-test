@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import SignInForm from '../SignInForm';
 import SignUpForm from '../SignUpForm';
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 const SignScreen: React.FC = () => {
   const classes = useStyles();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -81,7 +81,7 @@ const SignScreen: React.FC = () => {
                       </Typography>
                       <Button
                         onClick={() => {
-                          history.push('/register');
+                          navigate('/register');
                         }}
                       >
                         Register
@@ -94,7 +94,7 @@ const SignScreen: React.FC = () => {
                       </Typography>
                       <Button
                         onClick={() => {
-                          history.push('/login');
+                          navigate('/login');
                         }}
                       >
                         Login

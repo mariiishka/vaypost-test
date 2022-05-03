@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Snackbar, Alert } from '@mui/material';
 import { AlertColor } from '@mui/lab/Alert';
 import app from '../../../common/firebaseApp';
+import Header from '../Header';
 
 interface AuthenticatedLayoutProps {
   children: React.ReactElement;
@@ -39,6 +40,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
 
   return (
     <Box>
+      <Header />
       {children}
       <Snackbar
         anchorOrigin={{
