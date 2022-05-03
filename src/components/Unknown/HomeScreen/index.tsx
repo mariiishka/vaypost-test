@@ -1,16 +1,16 @@
-import { Box, Grid } from '@mui/material';
+import { Box, Button, Container } from '@mui/material';
 import React from 'react';
-import Header from '../Header';
+import { Link } from 'react-router-dom';
 
 const HomeScreen: React.FC = () => {
   return (
-    <Box height="100vh">
-      <Grid container>
-        <Grid item xs={12}>
-          <Header />
-        </Grid>
-      </Grid>
-    </Box>
+    <Container maxWidth="xl">
+      <Box py={5} display="flex" justifyContent="center">
+        <Button component={Link} to="/flats" variant="contained">
+          explore flats
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

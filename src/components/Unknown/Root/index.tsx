@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useUser } from 'reactfire';
 import AuthenticatedLayout from '../AuthenticatedLayout';
 import GuestLayout from '../GuestLayout';
 import HomeScreen from '../HomeScreen';
 import NotFoundScreen from '../NotFoundScreen';
 import SignScreen from '../../Auth/SignScreen';
+import FlatListing from '../FlatListing';
 
 const Root: React.FC = () => {
   const {
@@ -31,23 +32,25 @@ const Root: React.FC = () => {
   if (isLogged) {
     return (
       <AuthenticatedLayout>
-        <Switch>
-          <Route exact path="/" component={HomeScreen} />
-          <Route exact path="/login" component={() => <Redirect to="/" />} />
-          <Route exact path="/register" component={() => <Redirect to="/" />} />
-          <Route path="*" component={NotFoundScreen} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/flats" element={<FlatListing />} />
+          <Route path="/login" element={<Navigate to="/" />} />
+          <Route path="/register" element={<Navigate to="/" />} />
+          <Route path="*" element={<NotFoundScreen />} />
+        </Routes>
       </AuthenticatedLayout>
     );
   }
 
   return (
     <GuestLayout>
-      <Switch>
-        <Route exact path="/login" component={SignScreen} />
-        <Route exact path="/register" component={SignScreen} />
-        <Route path="*" component={NotFoundScreen} />
-      </Switch>
+      <Routes>
+        <Route path="/login" element={<SignScreen />} />
+        <Route path="/register" element={<SignScreen />} />
+        <Route path="/flats" element={<Navigate to="/login" />} />
+        <Route path="*" element={<NotFoundScreen />} />
+      </Routes>
     </GuestLayout>
   );
 };
