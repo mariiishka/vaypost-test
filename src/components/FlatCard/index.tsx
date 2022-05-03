@@ -61,9 +61,11 @@ const FlatCard: React.FC<Props> = ({ flat }) => {
             lineHeight="50px"
           >{`$${flat.dailyPriceUsd} / night`}</Typography>
           <Typography className={classes.flatStreet}>{flat.address}</Typography>
-          <Typography className={classes.flatDescription}>
-            {flat.description}
-          </Typography>
+          {flat.description && (
+            <Typography className={classes.flatDescription}>
+              {flat.description}
+            </Typography>
+          )}
         </Box>
         <Box maxWidth="67px">
           <Button size="small">details</Button>
