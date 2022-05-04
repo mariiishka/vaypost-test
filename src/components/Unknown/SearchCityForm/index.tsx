@@ -17,10 +17,12 @@ type Props = {
 };
 
 const SearchCityForm: React.FC<Props> = ({ formik, toFilterFlats }) => {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = (value: string) => {
-    const newState: URLSearchParamsInit = value ? { city: value } : {};
+    const newState: URLSearchParamsInit = value
+      ? { ...searchParams, city: value }
+      : {};
 
     formik.setFieldValue('country', value);
 
@@ -30,10 +32,11 @@ const SearchCityForm: React.FC<Props> = ({ formik, toFilterFlats }) => {
   const { ref } = usePlacesWidget({
     apiKey: process.env.REACT_APP_API_KEY,
     onPlaceSelected: (place) => {
-      const city = place.formatted_address.split(',')[0];
+      if (place && place.address_components) {
+        const city = place.address_components[0].long_name;
 
-      handleChange(city);
-      toFilterFlats();
+        formik.setFieldValue('country', city);
+      }
     },
   });
 
@@ -53,8 +56,16 @@ const SearchCityForm: React.FC<Props> = ({ formik, toFilterFlats }) => {
         id="country"
         name="country"
         placeholder="Type something"
-        onChange={(event) => handleChange(event.target.value)}
-        onBlur={(event) => handleChange(event.target.value)}
+        onChange={(event) => {
+          const value = event.target.value.split(',')[0];
+
+          handleChange(value);
+        }}
+        onBlur={(event) => {
+          const value = event.target.value.split(',')[0];
+
+          handleChange(value);
+        }}
         value={formik.values.country}
         InputProps={{
           endAdornment: (

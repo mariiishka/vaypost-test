@@ -7,19 +7,25 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Flat } from '../../../../types';
 import img from './images/flat-1.png';
 import useStyles from './useStyles';
 
 type Props = {
   flat: Flat;
+  active: boolean;
 };
 
-const FlatCard: React.FC<Props> = ({ flat }) => {
+const FlatCard: React.FC<Props> = ({ flat, active }) => {
   const classes = useStyles();
+  const { search } = useLocation();
 
   return (
-    <Card className={classes.flatCard}>
+    <Card
+      className={classes.flatCard}
+      variant={active ? 'outlined' : 'elevation'}
+    >
       <Box maxWidth="290px">
         <CardMedia
           component="img"
@@ -42,7 +48,13 @@ const FlatCard: React.FC<Props> = ({ flat }) => {
           )}
         </Box>
         <Box maxWidth="67px">
-          <Button size="small">details</Button>
+          <Button
+            component={Link}
+            to={`/flats/${flat.id}${search}`}
+            size="small"
+          >
+            details
+          </Button>
         </Box>
       </CardContent>
     </Card>

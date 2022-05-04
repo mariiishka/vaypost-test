@@ -7,6 +7,7 @@ import HomeScreen from '../HomeScreen';
 import NotFoundScreen from '../NotFoundScreen';
 import SignInScreen from '../../Auth/SignInScreen';
 import FlatListing from '../FlatListing';
+import FlatMap from '../FlatMap';
 
 const Root: React.FC = () => {
   const {
@@ -34,7 +35,10 @@ const Root: React.FC = () => {
       <AuthenticatedLayout>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/flats" element={<FlatListing />} />
+          <Route path="/flats" element={<FlatListing />}>
+            <Route index element={<>No flat selected</>} />
+            <Route path=":flatId" element={<FlatMap />} />
+          </Route>
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/register" element={<Navigate to="/" />} />
           <Route path="*" element={<NotFoundScreen />} />
