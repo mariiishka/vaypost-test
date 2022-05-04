@@ -6,46 +6,26 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Flat } from '../../../types';
+import { Link, useLocation } from 'react-router-dom';
+import { Flat } from '../../../../types';
 import img from './images/flat-1.png';
+import useStyles from './useStyles';
 
 type Props = {
   flat: Flat;
+  active: boolean;
 };
 
-const useStyles = makeStyles({
-  flatCard: {
-    display: 'flex',
-    marginBottom: '50px',
-  },
-  flatCardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  flatStreet: {
-    fontSize: '12px',
-    color: 'rgba(0, 0, 0, 0.5)',
-  },
-  flatDescription: {
-    maxWidth: '200px',
-    fontSize: '8px',
-    color: 'rgba(0, 0, 0, 0.5)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    '-webkit-box-orient': 'vertical',
-    '-webkit-line-clamp': '3',
-  },
-});
-
-const FlatCard: React.FC<Props> = ({ flat }) => {
+const FlatCard: React.FC<Props> = ({ flat, active }) => {
   const classes = useStyles();
+  const { search } = useLocation();
 
   return (
-    <Card className={classes.flatCard}>
+    <Card
+      className={classes.flatCard}
+      variant={active ? 'outlined' : 'elevation'}
+    >
       <Box maxWidth="290px">
         <CardMedia
           component="img"
@@ -68,7 +48,13 @@ const FlatCard: React.FC<Props> = ({ flat }) => {
           )}
         </Box>
         <Box maxWidth="67px">
-          <Button size="small">details</Button>
+          <Button
+            component={Link}
+            to={`/flats/${flat.id}${search}`}
+            size="small"
+          >
+            details
+          </Button>
         </Box>
       </CardContent>
     </Card>

@@ -5,8 +5,9 @@ import AuthenticatedLayout from '../AuthenticatedLayout';
 import GuestLayout from '../GuestLayout';
 import HomeScreen from '../HomeScreen';
 import NotFoundScreen from '../NotFoundScreen';
-import SignScreen from '../../Auth/SignScreen';
+import SignInScreen from '../../Auth/SignInScreen';
 import FlatListing from '../FlatListing';
+import FlatMap from '../FlatMap';
 
 const Root: React.FC = () => {
   const {
@@ -34,7 +35,10 @@ const Root: React.FC = () => {
       <AuthenticatedLayout>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/flats" element={<FlatListing />} />
+          <Route path="/flats" element={<FlatListing />}>
+            <Route index element={<>No flat selected</>} />
+            <Route path=":flatId" element={<FlatMap />} />
+          </Route>
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/register" element={<Navigate to="/" />} />
           <Route path="*" element={<NotFoundScreen />} />
@@ -46,8 +50,8 @@ const Root: React.FC = () => {
   return (
     <GuestLayout>
       <Routes>
-        <Route path="/login" element={<SignScreen />} />
-        <Route path="/register" element={<SignScreen />} />
+        <Route path="/login" element={<SignInScreen />} />
+        <Route path="/register" element={<SignInScreen />} />
         <Route path="/flats" element={<Navigate to="/login" />} />
         <Route path="*" element={<NotFoundScreen />} />
       </Routes>

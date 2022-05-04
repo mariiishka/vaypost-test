@@ -5,34 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
-import { makeStyles } from '@mui/styles';
-import * as yup from 'yup';
 import Typography from '@mui/material/Typography';
 import app from '../../../common/firebaseApp';
 import { UIContext } from '../../Unknown/UIContext';
-import theme from '../../../common/theme';
-
-const useStyles = makeStyles({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    [theme.breakpoints.up('md')]: {
-      gap: '32px',
-    },
-  },
-});
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email('Enter a valid email')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .min(12, 'Password should be of minimum 12 characters length')
-    .required('Password is required'),
-});
+import useStyles from './useStyles';
+import validationSchema from './validationSchema';
 
 const SignInForm: React.FC = () => {
   const { setAlert } = React.useContext(UIContext);

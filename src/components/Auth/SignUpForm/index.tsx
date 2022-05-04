@@ -5,45 +5,14 @@ import IconButton from '@mui/material/IconButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
-import { makeStyles } from '@mui/styles';
-import * as yup from 'yup';
 import Typography from '@mui/material/Typography';
 import app from '../../../common/firebaseApp';
 import { UIContext } from '../../Unknown/UIContext';
-import theme from '../../../common/theme';
-
-const useStyles = makeStyles({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    [theme.breakpoints.up('md')]: {
-      gap: '32px',
-    },
-  },
-});
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email('Enter a valid email')
-    .required('Email is required'),
-  fullName: yup
-    .string()
-    .matches(/\w+\s+\w+/, 'Full name should be of minimum 2 words')
-    .required('Full name is required'),
-  password: yup
-    .string()
-    .min(12, 'Password should be of minimum 12 characters length')
-    .required('Password is required'),
-  passwordConfirmation: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match')
-    .required('Repeat password is required'),
-});
+import useStyles from './useStyles';
+import validationSchema from './validationSchema';
 
 const SignUpForm: React.FC = () => {
-  const { setAlert } = React.useContext(UIContext);
+  const { setAlert, setWelcomeAlert } = React.useContext(UIContext);
   const classes = useStyles();
 
   const formik = useFormik({
@@ -62,9 +31,17 @@ const SignUpForm: React.FC = () => {
           .auth()
           .createUserWithEmailAndPassword(values.email, values.password);
 
-        await createUser.user?.updateProfile({
-          displayName: values.fullName,
-        });
+        if (createUser.user) {
+          await createUser.user.updateProfile({
+            displayName: values.fullName,
+          });
+
+          setWelcomeAlert({
+            show: true,
+            severity: 'info',
+            message: 'Welcome on board 🚀',
+          });
+        }
       } catch (error) {
         let message = 'Somthing went wrong';
 
@@ -106,14 +83,7 @@ const SignUpForm: React.FC = () => {
           type="text"
           value={formik.values.fullName}
           onChange={(event) => {
-            const validatedValue = event.target.value.replace(
-              /(^|\s)\S/g,
-              (a) => {
-                return a.toUpperCase();
-              },
-            );
-
-            formik.setFieldValue('fullName', validatedValue);
+            formik.setFieldValue('fullName', event.target.value);
           }}
           error={formik.touched.fullName && Boolean(formik.errors.fullName)}
           helperText={formik.touched.fullName && formik.errors.fullName}

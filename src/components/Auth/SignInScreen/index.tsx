@@ -3,44 +3,17 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import SignInForm from '../SignInForm';
 import SignUpForm from '../SignUpForm';
 
-import voypostLogo from './voypost-logo.svg';
-import heroImage from './hero.png';
-import theme from '../../../common/theme';
+import { ReactComponent as VoypostLogo } from './voypost-logo.svg';
+import useStyles from './useStyles';
 
-const useStyles = makeStyles({
-  boxWithImage: {
-    width: '100%',
-    height: '100vh',
-    backgroundImage: `url(${heroImage})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-  },
-  boxWithForm: {
-    maxWidth: '100%',
-    height: '100%',
-    textAlign: 'center',
-    justifyContent: 'space-between',
-    paddingTop: '40px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    [theme.breakpoints.up('md')]: {
-      maxWidth: '375px',
-      paddingTop: '100px',
-      paddingBottom: '70px',
-    },
-  },
-});
-
-const SignScreen: React.FC = () => {
+const SignInScreen: React.FC = () => {
   const classes = useStyles();
   const location = useLocation();
-  const navigate = useNavigate();
 
   return (
     <>
@@ -53,7 +26,7 @@ const SignScreen: React.FC = () => {
       >
         <Container fixed maxWidth="xl">
           <Grid container>
-            <Grid item xs={12} md={6} display={{ xs: 'none', md: 'block' }}>
+            <Grid item xs={12} md={6}>
               <Box className={classes.boxWithImage} />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -64,7 +37,7 @@ const SignScreen: React.FC = () => {
               >
                 <Grid item>
                   <Box mb={{ xs: 2, md: 5 }}>
-                    <img src={voypostLogo} alt="Voypost logo" />
+                    <VoypostLogo />
                   </Box>
                   {location.pathname === '/login' ? (
                     <SignInForm />
@@ -79,11 +52,7 @@ const SignScreen: React.FC = () => {
                       <Typography variant="h6">
                         Don’t have an account?
                       </Typography>
-                      <Button
-                        onClick={() => {
-                          navigate('/register');
-                        }}
-                      >
+                      <Button component={Link} to="/register">
                         Register
                       </Button>
                     </>
@@ -92,11 +61,7 @@ const SignScreen: React.FC = () => {
                       <Typography variant="h6">
                         Already have account?
                       </Typography>
-                      <Button
-                        onClick={() => {
-                          navigate('/login');
-                        }}
-                      >
+                      <Button component={Link} to="/login">
                         Login
                       </Button>
                     </>
@@ -111,4 +76,4 @@ const SignScreen: React.FC = () => {
   );
 };
 
-export default SignScreen;
+export default SignInScreen;
