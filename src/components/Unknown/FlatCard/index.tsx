@@ -6,40 +6,14 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import React from 'react';
-import { Flat } from '../../../types';
+import { Flat } from '../../../../types';
 import img from './images/flat-1.png';
+import useStyles from './useStyles';
 
 type Props = {
   flat: Flat;
 };
-
-const useStyles = makeStyles({
-  flatCard: {
-    display: 'flex',
-    marginBottom: '50px',
-  },
-  flatCardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  },
-  flatStreet: {
-    fontSize: '12px',
-    color: 'rgba(0, 0, 0, 0.5)',
-  },
-  flatDescription: {
-    maxWidth: '200px',
-    fontSize: '8px',
-    color: 'rgba(0, 0, 0, 0.5)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    '-webkit-box-orient': 'vertical',
-    '-webkit-line-clamp': '3',
-  },
-});
 
 const FlatCard: React.FC<Props> = ({ flat }) => {
   const classes = useStyles();

@@ -19,13 +19,6 @@ type Props = {
 const SearchCityForm: React.FC<Props> = ({ formik, toFilterFlats }) => {
   const [, setSearchParams] = useSearchParams();
 
-  const { ref } = usePlacesWidget({
-    apiKey: 'AIzaSyBIYQjv0QENcCCgl_-HmguqdVRf82w5neM',
-    onPlaceSelected: (place) => {
-      formik.setFieldValue('country', place.formatted_address);
-    },
-  });
-
   const handleChange = (value: string) => {
     const newState: URLSearchParamsInit = value ? { city: value } : {};
 
@@ -33,6 +26,16 @@ const SearchCityForm: React.FC<Props> = ({ formik, toFilterFlats }) => {
 
     setSearchParams(newState);
   };
+
+  const { ref } = usePlacesWidget({
+    apiKey: process.env.REACT_APP_API_KEY,
+    onPlaceSelected: (place) => {
+      const city = place.formatted_address.split(',')[0];
+
+      handleChange(city);
+      toFilterFlats();
+    },
+  });
 
   return (
     <form

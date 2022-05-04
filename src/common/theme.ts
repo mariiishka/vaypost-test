@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 const defaultTheme = createTheme({
+  spacing: (factor: number) => `${0.25 * factor}rem`,
   palette: {
     primary: {
       main: '#F50057',
@@ -8,6 +10,7 @@ const defaultTheme = createTheme({
     },
     text: {
       primary: '#000',
+      secondary: grey[600],
     },
     info: {
       main: '#323232',
