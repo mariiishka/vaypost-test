@@ -36,7 +36,7 @@ const Root: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/flats" element={<FlatListing />}>
-            <Route index element={<>No flat selected</>} />
+            <Route index element={<>No flat selected </>} />
             <Route path=":flatId" element={<FlatMap />} />
           </Route>
           <Route path="/login" element={<Navigate to="/" />} />
