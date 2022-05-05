@@ -18,7 +18,7 @@ const FlatMap: React.FC = () => {
   const { flatId } = useParams();
 
   const firestore = useFirestore();
-  const flatDoc = firestore.collection('flats').doc(`${flatId}`);
+  const flatDoc = firestore.collection('flats').doc(flatId);
 
   const { status, data: flat } = useFirestoreDocData<Flat>(flatDoc);
 
