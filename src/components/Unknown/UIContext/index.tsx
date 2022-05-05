@@ -1,31 +1,31 @@
 import React, { createContext, useState } from 'react';
 import MuiAlert, { AlertColor } from '@mui/lab/Alert';
-import { Alert, Snackbar } from '@mui/material';
+import { Snackbar, SnackbarOrigin } from '@mui/material';
 
 export const UIContext = createContext<UIContextProps>({} as UIContextProps);
 
 interface UIContextProps {
   setAlert: React.Dispatch<React.SetStateAction<AlertProps>>;
-  setWelcomeAlert: React.Dispatch<React.SetStateAction<AlertProps>>;
 }
 
 interface AlertProps {
   show: boolean;
+  haveIcon?: boolean;
   severity?: AlertColor;
   message?: string;
+  ancorOrigin?: SnackbarOrigin;
 }
 
 export const UIContextProvider: React.FC = ({ children }) => {
   const [alert, setAlert] = useState<AlertProps>({
     show: false,
+    haveIcon: true,
     severity: 'info',
+    ancorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
     message: '',
-  });
-
-  const [welcomeAlert, setWelcomeAlert] = React.useState<AlertProps>({
-    show: false,
-    severity: 'info',
-    message: 'Welcome on board 🚀',
   });
 
   const handleClose = () =>
@@ -34,34 +34,22 @@ export const UIContextProvider: React.FC = ({ children }) => {
     });
 
   return (
-    <UIContext.Provider value={{ setAlert, setWelcomeAlert }}>
+    <UIContext.Provider value={{ setAlert }}>
       {children}
-      <Snackbar open={alert.show} autoHideDuration={4000} onClose={handleClose}>
-        <MuiAlert elevation={6} variant="filled" severity={alert.severity}>
-          {alert.message}
-        </MuiAlert>
-      </Snackbar>
       <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={welcomeAlert.show}
+        anchorOrigin={alert.ancorOrigin}
+        open={alert.show}
         autoHideDuration={4000}
-        onClose={() =>
-          setWelcomeAlert({
-            show: false,
-          })
-        }
+        onClose={handleClose}
       >
-        <Alert
-          icon={false}
+        <MuiAlert
+          icon={alert.haveIcon}
           elevation={6}
           variant="filled"
-          severity={welcomeAlert.severity}
+          severity={alert.severity}
         >
-          {welcomeAlert.message}
-        </Alert>
+          {alert.message}
+        </MuiAlert>
       </Snackbar>
     </UIContext.Provider>
   );

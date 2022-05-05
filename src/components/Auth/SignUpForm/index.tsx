@@ -12,7 +12,7 @@ import useStyles from './useStyles';
 import validationSchema from './validationSchema';
 
 const SignUpForm: React.FC = () => {
-  const { setAlert, setWelcomeAlert } = React.useContext(UIContext);
+  const { setAlert } = React.useContext(UIContext);
   const classes = useStyles();
 
   const formik = useFormik({
@@ -36,10 +36,21 @@ const SignUpForm: React.FC = () => {
             displayName: values.fullName,
           });
 
-          setWelcomeAlert({
+          setAlert({
             show: true,
             severity: 'info',
             message: 'Welcome on board 🚀',
+            haveIcon: false,
+            ancorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+          });
+        } else {
+          setAlert({
+            show: true,
+            severity: 'error',
+            message: 'Somthing went wrong',
           });
         }
       } catch (error) {

@@ -31,8 +31,7 @@ const FlatListing: React.FC = () => {
     ? flatsCollection.where('cityName', '==', `${searchedCity}`)
     : flatsCollection;
 
-  const { status, data: flats }: { status: string; data: Flat[] } =
-    useFirestoreCollectionData(allFlats);
+  const { status, data: flats } = useFirestoreCollectionData<Flat>(allFlats);
 
   const toFilterFlats = React.useCallback(() => {
     setSearchedCity(formik.values.country);
@@ -50,17 +49,17 @@ const FlatListing: React.FC = () => {
               Flats to rent
             </Typography>
             <Box className={classes.flatsList}>
-              {status === 'success' && !flats.length ? (
-                <p>No flats with such city</p>
-              ) : (
-                <></>
+              {status === 'success' && !flats.length && (
+                <Typography>No flats with such city</Typography>
               )}
 
               {status === 'success' ? (
                 flats.map((flat) => {
-                  const active = flat.id === flatId;
+                  const isActive = flat.id === flatId;
 
-                  return <FlatCard key={flat.id} flat={flat} active={active} />;
+                  return (
+                    <FlatCard key={flat.id} flat={flat} isActive={isActive} />
+                  );
                 })
               ) : (
                 <p>Loading...</p>

@@ -10,7 +10,7 @@ const validationSchema = yup.object({
     .matches(/(^|\s)\S/, 'Error')
     .matches(
       /\b[A-Z]\w+\s+\b[A-Z]\w+/,
-      'Full name should be of minimum 2 capitilized words',
+      'Full name must consist of at least 2 capitalized Latin words',
     )
     .required('Full name is required'),
   password: yup

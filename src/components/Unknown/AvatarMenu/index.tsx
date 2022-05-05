@@ -7,14 +7,7 @@ import { useUser } from 'reactfire';
 import app from '../../../common/firebaseApp';
 import clearFirestoreCache from '../../../common/clearFirestoreCache';
 import { UIContext } from '../UIContext';
-
-const getInitisls = (value: string) => {
-  return value
-    .trim()
-    .split(' ')
-    .map((name: string) => name[0])
-    .join('');
-};
+import getInitisls from '../../../common/getInitials';
 
 const AvatarMenu: React.FC = () => {
   const { data: user } = useUser();

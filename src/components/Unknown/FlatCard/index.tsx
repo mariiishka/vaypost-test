@@ -14,17 +14,17 @@ import useStyles from './useStyles';
 
 type Props = {
   flat: Flat;
-  active: boolean;
+  isActive: boolean;
 };
 
-const FlatCard: React.FC<Props> = ({ flat, active }) => {
+const FlatCard: React.FC<Props> = ({ flat, isActive }) => {
   const classes = useStyles();
   const { search } = useLocation();
 
   return (
     <Card
       className={classes.flatCard}
-      variant={active ? 'outlined' : 'elevation'}
+      variant={isActive ? 'outlined' : 'elevation'}
     >
       <Box maxWidth="290px">
         <CardMedia

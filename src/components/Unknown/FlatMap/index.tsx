@@ -20,8 +20,7 @@ const FlatMap: React.FC = () => {
   const firestore = useFirestore();
   const flatDoc = firestore.collection('flats').doc(`${flatId}`);
 
-  const { status, data: flat }: { status: string; data: Flat } =
-    useFirestoreDocData(flatDoc);
+  const { status, data: flat } = useFirestoreDocData<Flat>(flatDoc);
 
   if (status === 'loading') {
     return <>Loading flat details..</>;
